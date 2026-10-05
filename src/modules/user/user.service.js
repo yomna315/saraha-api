@@ -7,7 +7,7 @@ import { OAuth2Client } from "google-auth-library";
 import "dotenv/config";
 
 export async function signUp(req, res, next) {
-  const { email, password, fname, lname, age, gender } = req.body;
+  const { email, password, fname, lname, age, gender, phone } = req.body;
 
   if (await UserModel.findOne({ email: email.toLowerCase() }))
     throw new Error("Email already exists", { cause: 409 });
@@ -20,6 +20,10 @@ export async function signUp(req, res, next) {
   //   age,
   //   gender,
   // });
+  const paths = [];
+  for (const file of req.files.attachments) {
+    paths.push(file.path);
+  }
 
   const user = await dbservice.create({
     model: UserModel,
@@ -30,6 +34,8 @@ export async function signUp(req, res, next) {
       lname,
       age,
       gender,
+      profileImage: req.files.attachment[0].path,
+      coverImages: paths,
       phone: Encrypt(phone),
     },
   });
@@ -51,7 +57,7 @@ export const signUpWithGmail = async (req, res, next) => {
     let user = await userModel.findOne({
       email: email.toLowerCase(),
     });
-
+    const s = ";";
     if (!user) {
       user = await userModel.create({
         fName: given_name,

@@ -26,7 +26,7 @@ const bootstrap = async () => {
 
   app.use((err, req, res, next) => {
     console.error(err);
-    res.status(err.cause).json({ message: err.message, stack: err.stack });
+    res.status(statusCode).json({ message: err.message, stack: err.stack });
   });
 
   app.listen(port, () => console.log(`Example app listening on port ${port}!`));

@@ -1,19 +1,52 @@
+// import crypto from "node:crypto";
+// const ENCRYPTION_KEY = Buffer.from(
+//   "qiuw3e4r5t6y7u8i9o0p1a2s3d4f5g6h7j8",
+//   "utf-8",
+// ); // Must be 32 bytes for AES-256
+// const IV_LENGTH = 16;
+// export function Encrypt(plainText) {
+//   const iv = crypto.randomBytes(IV_LENGTH);
+//   const cipher = crypto.createCipheriv("aes-256-cbc", ENCRYPTION_KEY, iv);
+//   let encrypted = cipher.update(plainText, "utf8", "hex");
+//   encrypted += cipher.final("hex");
+//   return iv.toString("hex") + ":" + encrypted;
+// }
+
+// export function Decrypt(text) {
+//   const [ivHex, encryptedText] = text.split(":");
+//   const iv = Buffer.from(ivHex, "hex");
+//   const decipher = crypto.createDecipheriv("aes-256-cbc", ENCRYPTION_KEY, iv);
+//   let decrypted = decipher.update(encryptedText, "hex", "utf8");
+//   decrypted += decipher.final("utf8");
+//   return decrypted;
+// }
 import crypto from "node:crypto";
-const ENCRYPTION_KEY = Buffer.from("jfjgrlirongoneowoeqqwn2@#%$54lm");
-const IV_LENGTH = 31;
+
+const ENCRYPTION_KEY = Buffer.from("12345678901234567890123456789012");
+
+const IV_LENGTH = 16;
+
 export function Encrypt(plainText) {
   const iv = crypto.randomBytes(IV_LENGTH);
+
   const cipher = crypto.createCipheriv("aes-256-cbc", ENCRYPTION_KEY, iv);
+
   let encrypted = cipher.update(plainText, "utf8", "hex");
   encrypted += cipher.final("hex");
+
   return iv.toString("hex") + ":" + encrypted;
 }
 
 export function Decrypt(text) {
   const [ivHex, encryptedText] = text.split(":");
+
   const iv = Buffer.from(ivHex, "hex");
+
   const decipher = crypto.createDecipheriv("aes-256-cbc", ENCRYPTION_KEY, iv);
+
   let decrypted = decipher.update(encryptedText, "hex", "utf8");
+
   decrypted += decipher.final("utf8");
+
   return decrypted;
 }
