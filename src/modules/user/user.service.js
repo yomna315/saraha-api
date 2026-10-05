@@ -42,8 +42,7 @@ export const signUpWithGmail = async (req, res, next) => {
 
     const decoded = await client.verifyIdToken({
       idToken,
-      audience:
-        "455258291290-lp24bajrh81610al94qhbu5do12o1s2i.apps.googleusercontent.com",
+      audience: process.env.GOOGLE_CLIENT_ID,
     });
 
     const { family_name, given_name, picture, email_verified, email } =
